@@ -1,6 +1,6 @@
 ---
 - name: Create local user on Windows
-  inventory: windows
+  hosts: windows
   tasks:
     - name: Check if user exists
       win_shell: Get-LocalUser -Name "dev" -ErrorAction SilentlyContinue
