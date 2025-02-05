@@ -9,8 +9,8 @@
 
     - name: Create user if not exists
       win_user:
-        name: dev
-        password: "IOC@12345"
+        name: ******
+        password: "**********"
         description: "Administrator Account for dev"
         state: present
       when: user_check.rc != 0
