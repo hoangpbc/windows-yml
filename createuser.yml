@@ -1,0 +1,29 @@
+---
+- name: Create local user on Windows
+  hosts: windows
+  tasks:
+    - name: Check if user exists
+      win_shell: Get-LocalUser -Name "dev" -ErrorAction SilentlyContinue
+      register: user_check
+      ignore_errors: yes
+
+    - name: Create user if not exists
+      win_user:
+        name: dev
+        password: "IOC@12345"
+        description: "Administrator Account for dev"
+        state: present
+      when: user_check.rc != 0
+
+    - name: Add user to Administrators group
+      win_group_membership:
+        name: Administrators
+        members:
+          - dev
+        state: present
+      when: user_check.rc != 0
+
+    - name: Display success message
+      debug:
+        msg: "User 'dev' has been created with Administrator rights."
+      when: user_check.rc != 0
