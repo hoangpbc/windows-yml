@@ -1,6 +1,6 @@
 ---
 - name: Check and Install Windows Updates (No Reboot)
-  hosts: windows_servers  # Replace with your inventory group or host
+  hosts: all  # Replace with your inventory group or host
   gather_facts: false
   tasks:
     - name: Check for available updates
