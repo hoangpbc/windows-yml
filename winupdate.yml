@@ -1,0 +1,24 @@
+---
+- name: Check and Install Windows Updates (No Reboot)
+  hosts: windows_servers  # Replace with your inventory group or host
+  gather_facts: false
+  tasks:
+    - name: Check for available updates
+      win_updates:
+        category_names:
+          - SecurityUpdates
+          - CriticalUpdates
+        reboot: no
+      register: update_result
+
+    - name: Display the list of available updates
+      debug:
+        msg: "{{ update_result.updates }}"
+
+    - name: Install all updates without rebooting
+      win_updates:
+        category_names:
+          - SecurityUpdates
+          - CriticalUpdates
+        reboot: no  # Do not reboot after installing updates
+      when: update_result.updates | length > 0
