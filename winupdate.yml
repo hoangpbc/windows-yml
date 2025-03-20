@@ -10,3 +10,5 @@
 
     # output results
     - debug: var=result
+    - name: Force Windows Update to refresh status
+      win_command: UsoClient StartScan
