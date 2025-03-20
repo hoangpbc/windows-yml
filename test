@@ -1,0 +1,9 @@
+---
+- name: Test Windows Update
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Check for Windows Updates
+      win_updates:
+        category_names: []
+        reboot: no
