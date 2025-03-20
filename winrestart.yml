@@ -3,6 +3,10 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: Reboot Windows machine
+    - name: Reboot the Windows machine
       win_reboot:
-        reboot_timeout: 600  # Chờ tối đa 10 phút để Windows khởi động lại
+        reboot_timeout: 600
+    - name: Wait for WinRM service to be available
+      wait_for:
+        port: 5985
+        timeout: 300
