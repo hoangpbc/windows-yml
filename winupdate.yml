@@ -1,6 +1,6 @@
 ---
 - name: Check and Install Windows Updates (No Reboot)
-  hosts: all  # Thay đổi theo inventory của bạn
+  hosts: all
   gather_facts: false
   tasks:
     - name: Check for available Windows updates
@@ -14,7 +14,7 @@
           - DefinitionUpdates
           - Drivers
           - Tools
-          - Updates # Kiểm tra tất cả các bản cập nhật
+          - Updates
         reboot: no
       register: update_result
 
@@ -33,7 +33,7 @@
           - DefinitionUpdates
           - Drivers
           - Tools
-          - Updates # Cài đặt tất cả các bản cập nhật
+          - Updates
         reboot: no
       when: update_result.updates | length > 0
 
@@ -41,3 +41,5 @@
       debug:
         msg: "Installed updates: {{ update_result.updates | default([]) }}"
 
+    - name: Force Windows Update to refresh status
+      win_command: UsoClient StartScan
