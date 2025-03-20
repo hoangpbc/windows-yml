@@ -1,9 +1,9 @@
 ---
 - name: Check and Install Windows Updates (No Reboot)
-  hosts: all  # Replace with your inventory group or host
+  hosts: all  # Thay đổi theo inventory của bạn
   gather_facts: false
   tasks:
-    - name: Check for available updates
+    - name: Check for available Windows updates
       win_updates:
         category_names:
           - SecurityUpdates
@@ -14,15 +14,15 @@
           - DefinitionUpdates
           - Drivers
           - Tools
-          - Updates
+          - Updates # Kiểm tra tất cả các bản cập nhật
         reboot: no
       register: update_result
 
-    - name: Display the list of available updates
+    - name: Display available updates
       debug:
-        msg: "{{ update_result.updates }}"
+        msg: "Available updates: {{ update_result.updates | default([]) }}"
 
-    - name: Install all updates without rebooting
+    - name: Install all available updates without rebooting
       win_updates:
         category_names:
           - SecurityUpdates
@@ -33,6 +33,11 @@
           - DefinitionUpdates
           - Drivers
           - Tools
-          - Updates
-        reboot: no  # Do not reboot after installing updates
+          - Updates # Cài đặt tất cả các bản cập nhật
+        reboot: no
       when: update_result.updates | length > 0
+
+    - name: Show final update status
+      debug:
+        msg: "Installed updates: {{ update_result.updates | default([]) }}"
+
