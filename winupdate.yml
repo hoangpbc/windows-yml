@@ -1,45 +1,12 @@
----
-- name: Check and Install Windows Updates (No Reboot)
+- name:  Windows Update
   hosts: all
   gather_facts: false
   tasks:
-    - name: Check for available Windows updates
+    - name: Running Windows Update
       win_updates:
-        category_names:
-          - SecurityUpdates
-          - CriticalUpdates
-          - UpdateRollups
-          - FeaturePacks
-          - ServicePacks
-          - DefinitionUpdates
-          - Drivers
-          - Tools
-          - Updates
-        reboot: no
-      register: update_result
+        category_names: ['SecurityUpdates','CriticalUpdates','UpdateRollups', 'Updates', 'DefinitionUpdates']
+        #category_names: ['SecurityUpdates']
+      register: result
 
-    - name: Display available updates
-      debug:
-        msg: "Available updates: {{ update_result.updates | default([]) }}"
-
-    - name: Install all available updates without rebooting
-      win_updates:
-        category_names:
-          - SecurityUpdates
-          - CriticalUpdates
-          - UpdateRollups
-          - FeaturePacks
-          - ServicePacks
-          - DefinitionUpdates
-          - Drivers
-          - Tools
-          - Updates
-        reboot: no
-      when: update_result.updates | length > 0
-
-    - name: Show final update status
-      debug:
-        msg: "Installed updates: {{ update_result.updates | default([]) }}"
-
-    - name: Force Windows Update to refresh status
-      win_command: UsoClient StartScan
+    # output results
+    - debug: var=result
