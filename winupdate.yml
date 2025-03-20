@@ -5,7 +5,16 @@
   tasks:
     - name: Check for available updates
       win_updates:
-        category_names: []
+        category_names:
+          - SecurityUpdates
+          - CriticalUpdates
+          - UpdateRollups
+          - FeaturePacks
+          - ServicePacks
+          - DefinitionUpdates
+          - Drivers
+          - Tools
+          - Updates
         reboot: no
       register: update_result
 
@@ -15,6 +24,15 @@
 
     - name: Install all updates without rebooting
       win_updates:
-        category_names: []
+        category_names:
+          - SecurityUpdates
+          - CriticalUpdates
+          - UpdateRollups
+          - FeaturePacks
+          - ServicePacks
+          - DefinitionUpdates
+          - Drivers
+          - Tools
+          - Updates
         reboot: no  # Do not reboot after installing updates
       when: update_result.updates | length > 0
